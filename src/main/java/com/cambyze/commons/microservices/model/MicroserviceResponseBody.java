@@ -18,7 +18,8 @@ public class MicroserviceResponseBody {
   private String message;
   private String error;
   private String exception;
-  private URI path;
+  private URI uri;
+  private String path;
 
   private List<MicroserviceResponseError> errors;
 
@@ -30,18 +31,25 @@ public class MicroserviceResponseBody {
   }
 
 
-  public MicroserviceResponseBody(int status, String message, URI path, String error,
+
+  public MicroserviceResponseBody(int status, String message, URI uri, String error,
       String exception, List<MicroserviceResponseError> errors) {
     super();
     this.status = status;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss*SSSZZZZ");
     this.timestamp = dateFormat.format(Calendar.getInstance().getTime());
     this.message = message;
-    this.path = path;
+    this.uri = uri;
+    if (uri != null) {
+      this.path = uri.getPath();
+    } else {
+      this.path = null;
+    }
     this.error = error;
     this.exception = exception;
     this.errors = errors;
   }
+
 
   public int getStatus() {
     return status;
@@ -59,12 +67,25 @@ public class MicroserviceResponseBody {
     this.timestamp = timestamp;
   }
 
-  public URI getPath() {
+  public URI getUri() {
+    return uri;
+  }
+
+  public void setUri(URI uri) {
+    this.uri = uri;
+    if (uri != null) {
+      this.path = uri.getPath();
+    } else {
+      this.path = null;
+    }
+  }
+
+  public String getPath() {
     return path;
   }
 
-  public void setPath(URI path) {
-    this.path = path;
+  public void setPath(String path) {
+    // Nothing to do - the path is inherited of the uri
   }
 
   public String getMessage() {

@@ -35,4 +35,18 @@ public interface MicroserviceControllerService {
   public void updateMicroserviceResponseBodyWithException(
       MicroserviceResponseBody microserviceResponseBody, Throwable throwable, Throwable parent);
 
+  /**
+   * Create a new URI based on the sent one but with a correct reference
+   * <p>
+   * Indeed, reference has to be uppercase without blank at the beginning or at the end
+   * 
+   * @param uri URI to be changed
+   * @param endOfPath to identify the end of the path before the reference. For instance "/products"
+   *        for a "https:/www.server.com/products/X22"
+   * @param reference reference to be added at the end of the path
+   * 
+   * @return the modified URI
+   */
+  public URI formatUriWithCorrectReference(URI uri, String endOfPath, String reference);
+
 }

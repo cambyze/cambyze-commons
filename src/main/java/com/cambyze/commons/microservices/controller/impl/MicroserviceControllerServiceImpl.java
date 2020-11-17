@@ -1,6 +1,7 @@
 package com.cambyze.commons.microservices.controller.impl;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import com.cambyze.commons.microservices.controller.MicroserviceControllerService;
 import com.cambyze.commons.microservices.model.MicroserviceResponseBody;
 import com.cambyze.commons.microservices.model.MicroserviceResponseError;
+import com.cambyze.commons.microservices.web.exceptions.EntityAlreadyExistsException;
+import com.cambyze.commons.microservices.web.exceptions.EntityMandatoryAttributeException;
 import com.cambyze.commons.microservices.web.exceptions.EntityNotFoundException;
 
 /**
@@ -32,11 +35,11 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
     super();
   }
 
-  public ResponseEntity<Object> buildResponseException(URI path, Exception exception) {
+  public ResponseEntity<Object> buildResponseException(URI uri, Exception exception) {
 
     // Initialisation
     MicroserviceResponseBody microserviceResponseBody = new MicroserviceResponseBody();
-    microserviceResponseBody.setPath(path);
+    microserviceResponseBody.setUri(uri);
     // Default status
     microserviceResponseBody.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     ArrayList<MicroserviceResponseError> errors = new ArrayList<MicroserviceResponseError>();
@@ -68,9 +71,14 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
     if (throwable != null) {
       LOGGER.error(throwable.getMessage());
 
-      // Force status NOT_FOUND
+      // Force status according to Cambyze exceptions
       if (throwable instanceof EntityNotFoundException) {
         microserviceResponseBody.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      } else {
+        if (throwable instanceof EntityMandatoryAttributeException
+            || throwable instanceof EntityAlreadyExistsException) {
+          microserviceResponseBody.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
       }
 
       // First call
@@ -119,5 +127,22 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
     }
   }
 
+  public URI formatUriWithCorrectReference(URI uri, String endOfPath, String reference) {
+    String newPath = uri.getPath();
+    String searchString = endOfPath + "/";
+    int i = newPath.indexOf(searchString);
+    if (i >= 0) {
+      newPath = newPath.substring(0, i + searchString.length()) + reference;
+      try {
+        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), newPath,
+            uri.getQuery(), uri.getFragment());
+      } catch (URISyntaxException e) {
+        LOGGER.error(e.getMessage());
+        return uri;
+      }
+    } else {
+      return uri;
+    }
+  }
 
 }
