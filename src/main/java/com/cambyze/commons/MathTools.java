@@ -8,15 +8,24 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
  * Mathematics tools
+ * 
+ * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
 public class MathTools {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MathTools.class);
 
-  /*
+  /**
    * Round a Double with n decimals to be used typically for amounts as EUR with 2 decimals
+   * <p>
+   * Rounding mode to round towards "nearest neighbour" unless both neighbours are equidistant, in
+   * which case round up.
+   * 
+   * @param number number or amount to be rounded
+   * @param decimals number of decimals used to round the number
+   * @return rounded number
    */
   public static Double roundWithDecimals(Double number, int decimals) {
     if (number != null && decimals > 0) {

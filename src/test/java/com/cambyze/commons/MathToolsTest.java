@@ -3,6 +3,11 @@ package com.cambyze.commons;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Unit test for mathematics tools
+ * 
+ * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
+ */
 class MathToolsTest {
   @Test
   void test() {
