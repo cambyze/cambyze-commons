@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class EntityNotFoundException extends RuntimeException {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class RecordAlreadyExistsException extends RuntimeException {
 
-  private static final long serialVersionUID = -2136526719851089161L;
+  private static final long serialVersionUID = -2112387518349651893L;
 
   /**
-   * Exception triggered when a microservice does not find the requested entity
+   * Exception triggered when an entity already exists, typically an entity with the same reference
+   * that an existing one, when the reference makes the entity unique
    * 
    * @param message text which will be displayed in the response body as the message attribute
    */
-  public EntityNotFoundException(String message) {
+  public RecordAlreadyExistsException(String message) {
     super(message);
   }
 

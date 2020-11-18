@@ -9,18 +9,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public class EntityMandatoryAttributeException extends RuntimeException {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class RecordNotFoundException extends RuntimeException {
 
-  private static final long serialVersionUID = 1207691880895021472L;
+  private static final long serialVersionUID = -2136526719851089161L;
 
   /**
-   * Exception triggered when a mandatory attribute is missing, typically the reference one which
-   * makes the entity unique
+   * Exception triggered when a microservice does not find the requested entity
    * 
    * @param message text which will be displayed in the response body as the message attribute
    */
-  public EntityMandatoryAttributeException(String message) {
+  public RecordNotFoundException(String message) {
     super(message);
   }
 

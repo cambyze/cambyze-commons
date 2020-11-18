@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import com.cambyze.commons.microservices.controller.MicroserviceControllerService;
 import com.cambyze.commons.microservices.model.MicroserviceResponseBody;
 import com.cambyze.commons.microservices.model.MicroserviceResponseError;
-import com.cambyze.commons.microservices.web.exceptions.EntityAlreadyExistsException;
-import com.cambyze.commons.microservices.web.exceptions.EntityMandatoryAttributeException;
-import com.cambyze.commons.microservices.web.exceptions.EntityNotFoundException;
+import com.cambyze.commons.microservices.web.exceptions.RecordAlreadyExistsException;
+import com.cambyze.commons.microservices.web.exceptions.RecordMandatoryAttributeException;
+import com.cambyze.commons.microservices.web.exceptions.RecordNotFoundException;
 
 /**
  * Implementation of the service MicroserviceControllerService
@@ -72,11 +72,11 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
       LOGGER.error(throwable.getMessage());
 
       // Force status according to Cambyze exceptions
-      if (throwable instanceof EntityNotFoundException) {
+      if (throwable instanceof RecordNotFoundException) {
         microserviceResponseBody.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
-        if (throwable instanceof EntityMandatoryAttributeException
-            || throwable instanceof EntityAlreadyExistsException) {
+        if (throwable instanceof RecordMandatoryAttributeException
+            || throwable instanceof RecordAlreadyExistsException) {
           microserviceResponseBody.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
       }

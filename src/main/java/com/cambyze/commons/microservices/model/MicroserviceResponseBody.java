@@ -1,8 +1,8 @@
 package com.cambyze.commons.microservices.model;
 
 import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MicroserviceResponseBody {
 
   private int status;
-  private String timestamp;
+  private Date timestamp;
   private String message;
   private String error;
   private String exception;
@@ -25,8 +25,7 @@ public class MicroserviceResponseBody {
 
   public MicroserviceResponseBody() {
     super();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss*SSSZZZZ");
-    this.timestamp = dateFormat.format(Calendar.getInstance().getTime());
+    this.timestamp = Calendar.getInstance().getTime();
     this.status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
   }
 
@@ -36,8 +35,7 @@ public class MicroserviceResponseBody {
       String exception, List<MicroserviceResponseError> errors) {
     super();
     this.status = status;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss*SSSZZZZ");
-    this.timestamp = dateFormat.format(Calendar.getInstance().getTime());
+    this.timestamp = Calendar.getInstance().getTime();
     this.message = message;
     this.uri = uri;
     if (uri != null) {
@@ -59,11 +57,11 @@ public class MicroserviceResponseBody {
     this.status = status;
   }
 
-  public String getTimestamp() {
+  public Date getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(String timestamp) {
+  public void setTimestamp(Date timestamp) {
     this.timestamp = timestamp;
   }
 

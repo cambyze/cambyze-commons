@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class EntityAlreadyExistsException extends RuntimeException {
+public class RecordMandatoryAttributeException extends RuntimeException {
 
-  private static final long serialVersionUID = -2112387518349651893L;
+  private static final long serialVersionUID = 1207691880895021472L;
 
   /**
-   * Exception triggered when an entity already exists, typically an entity with the same reference
-   * that an existing one, when the reference makes the entity unique
+   * Exception triggered when a mandatory attribute is missing, typically the reference one which
+   * makes the entity unique
    * 
    * @param message text which will be displayed in the response body as the message attribute
    */
-  public EntityAlreadyExistsException(String message) {
+  public RecordMandatoryAttributeException(String message) {
     super(message);
   }
 
