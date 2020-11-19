@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public abstract class PersistEntity {
 
-  protected static final int NBDECIMALS = 2;
+  public static final int NBDECIMALS = 2;
 
   @JsonIgnore
   protected String entityName;

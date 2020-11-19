@@ -181,6 +181,7 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
   }
 
   public URI createTargetURI(PersistEntity requestEntity, String path) {
+    // Target URI
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{reference}")
         .buildAndExpand(requestEntity.getReference()).toUri();
     uri = formatUriWithCorrectReference(uri, path, requestEntity.getReference());
@@ -192,10 +193,10 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
       PersistEntity requestEntity, int operation) {
     try {
       // verification of the request body, except in case of suppression
-      if (requestEntity != null || operation == OPERATION_SUPPRESSION) {
+      if (requestEntity != null || operation == OPERATION_DELETE) {
 
         // In case of creation the reference is within the request entity else it is within the path
-        if (operation == OPERATION_CREATION) {
+        if (operation == OPERATION_CREATE) {
           reference = requestEntity.getReference();
         }
 
@@ -216,24 +217,27 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
     }
   }
 
-  public ResponseEntity<Object> prepareEntityForUpdate(PersistEntity requestEntity,
+  public ResponseEntity<Object> prepareEntityForCUD(PersistEntity requestEntity,
       PersistEntity existingEntity, URI uri, int operation) {
     try {
-      if (operation != OPERATION_CREATION || existingEntity == null) {
-        if ((operation == OPERATION_CREATION || existingEntity != null) && requestEntity != null) {
+      // The created entity not already exists
+      if (operation != OPERATION_CREATE || existingEntity == null) {
 
-          if (operation != OPERATION_CREATION) {
+        // the entity to delete or to update exists
+        if ((operation == OPERATION_CREATE || existingEntity != null) && requestEntity != null) {
+
+          if (operation != OPERATION_CREATE) {
             requestEntity.setId(existingEntity.getId());
             requestEntity.setReference(existingEntity.getReference());
           }
 
           String message;
           switch (operation) {
-            case OPERATION_CREATION:
+            case OPERATION_CREATE:
               message = "Creation of the " + requestEntity.getEntityName() + " "
                   + requestEntity.getReference() + " with values = " + requestEntity;
               break;
-            case OPERATION_SUPPRESSION:
+            case OPERATION_DELETE:
               message = "Suppression of the " + existingEntity.getEntityName() + " "
                   + existingEntity.getReference();
               break;
@@ -263,15 +267,15 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
     }
   }
 
-  public ResponseEntity<Object> createResponseBodyForUpdateSuccessful(PersistEntity entity, URI uri,
+  public ResponseEntity<Object> createResponseBodyCUDSuccessful(PersistEntity entity, URI uri,
       int operation) {
     String message;
     switch (operation) {
-      case OPERATION_CREATION:
+      case OPERATION_CREATE:
         message = "Creation of the " + entity.getEntityName() + " " + entity.getReference()
             + " successful";
         break;
-      case OPERATION_SUPPRESSION:
+      case OPERATION_DELETE:
         message = "Suppression of the " + entity.getEntityName() + " " + entity.getReference()
             + " successful";
         break;

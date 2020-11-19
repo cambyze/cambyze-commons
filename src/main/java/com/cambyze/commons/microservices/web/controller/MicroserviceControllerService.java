@@ -14,10 +14,10 @@ import com.cambyze.commons.microservices.model.PersistEntity;
  */
 public interface MicroserviceControllerService {
 
-  public static final int OPERATION_CREATION = 1;
-  public static final int OPERATION_SUPPRESSION = 2;
-  public static final int OPERATION_FULL_UPDATE = 3;
-  public static final int OPERATION_PARTIAL_UPDATE = 4;
+  public static final int OPERATION_CREATE = 1;
+  public static final int OPERATION_FULL_UPDATE = 2;
+  public static final int OPERATION_PARTIAL_UPDATE = 3;
+  public static final int OPERATION_DELETE = 4;
 
   /**
    * Analyse exception in order to build a response body for the microservices with errors
@@ -96,6 +96,8 @@ public interface MicroserviceControllerService {
    * 
    * @param reference reference of the entity to persist
    * @param requestEntity request entity
+   * @param operation type of CUD operation (Create, Partial/Full Update & Delete). Use
+   *        MicroserviceControllerService.OPERATION_xxx constants
    * @return a response body, in case of error, to be sent by the microservice. If there is no
    *         error, returns null.
    */
@@ -103,24 +105,28 @@ public interface MicroserviceControllerService {
       PersistEntity requestEntity, int operation);
 
   /**
-   * Prepare entity for partial update
+   * Prepare entity for to CUD (Create, Update & Delete)
    * 
    * @param requestEntity request entity
-   * @param existingEntity entity to update
+   * @param existingEntity entity to CUD (Create, Update & Delete)
    * @param uri uri to be used for the response body
+   * @param operation type of CUD operation (Create, Partial/Full Update & Delete). Use
+   *        MicroserviceControllerService.OPERATION_xxx constants
    * @return a response body, in case of error, to be sent by the microservice. If there is no
    *         error, returns null.
    */
-  public ResponseEntity<Object> prepareEntityForUpdate(PersistEntity requestEntity,
+  public ResponseEntity<Object> prepareEntityForCUD(PersistEntity requestEntity,
       PersistEntity existingEntity, URI uri, int operation);
 
   /**
    * Create the response body to send in case of successful operation on entity
    * 
-   * @param entity entity to persist
+   * @param entity entity with CUD successful (Create, Update & Delete)
    * @param uri uri to be used for the response body
+   * @param operation type of CUD operation (Create, Partial/Full Update & Delete). Use
+   *        MicroserviceControllerService.OPERATION_xxx constants
    * @return the response body
    */
-  public ResponseEntity<Object> createResponseBodyForUpdateSuccessful(PersistEntity entity, URI uri,
+  public ResponseEntity<Object> createResponseBodyCUDSuccessful(PersistEntity entity, URI uri,
       int operation);
 }

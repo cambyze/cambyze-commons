@@ -14,10 +14,10 @@ import com.cambyze.commons.microservices.model.PersistEntity;
 public interface PersistEntityDao<T extends PersistEntity> extends JpaRepository<T, Long> {
 
   /**
-   * find a product with its reference
+   * find a persistence entity with its reference
    * 
-   * @param reference reference of the product
-   * @return a product
+   * @param reference reference of the entity
+   * @return an entity
    */
   public T findByReference(String reference);
 
