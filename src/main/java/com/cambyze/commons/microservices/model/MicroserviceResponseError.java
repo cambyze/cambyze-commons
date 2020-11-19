@@ -3,8 +3,8 @@ package com.cambyze.commons.microservices.model;
 /**
  * Error information in case of microservices errors
  * 
+ * @author Thierry Nestelhut
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
- * 
  */
 public class MicroserviceResponseError {
   String message;

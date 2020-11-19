@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Response body for microservices
  * 
+ * @author Thierry Nestelhut
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
 public class MicroserviceResponseBody {

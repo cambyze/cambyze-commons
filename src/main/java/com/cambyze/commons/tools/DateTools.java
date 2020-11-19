@@ -1,4 +1,4 @@
-package com.cambyze.commons;
+package com.cambyze.commons.tools;
 
 
 import java.util.Calendar;
@@ -7,8 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Mathematics tools
+ * Date tools
  * 
+ * @author Thierry Nestelhut
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
 public class DateTools {

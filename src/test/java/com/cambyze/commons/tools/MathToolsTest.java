@@ -1,4 +1,4 @@
-package com.cambyze.commons;
+package com.cambyze.commons.tools;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Unit test for mathematics tools
  * 
+ * @author Thierry Nestelhut
  * @see <a href="https://github.com/cambyze">cambyze GitHub</a>
  */
 class MathToolsTest {
