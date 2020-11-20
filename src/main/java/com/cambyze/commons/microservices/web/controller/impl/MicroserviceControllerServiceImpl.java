@@ -136,19 +136,12 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
   }
 
   public URI formatUriWithCorrectReference(URI uri, String path, String reference) {
-    String newPath = uri.getPath();
-    String searchString = path + "/";
-    int i = newPath.indexOf(searchString);
-    if (i >= 0) {
-      newPath = newPath.substring(0, i + searchString.length()) + reference;
-      try {
-        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), newPath,
-            uri.getQuery(), uri.getFragment());
-      } catch (URISyntaxException e) {
-        LOGGER.error(e.getMessage());
-        return uri;
-      }
-    } else {
+    String newPath = path + "/" + reference;
+    try {
+      return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), newPath,
+          uri.getQuery(), uri.getFragment());
+    } catch (URISyntaxException e) {
+      LOGGER.error(e.getMessage());
       return uri;
     }
   }
@@ -180,20 +173,23 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
     return ServletUriComponentsBuilder.fromCurrentRequest().path("").build().toUri();
   }
 
-  public URI createTargetURI(PersistEntity requestEntity, String path) {
+  public URI createTargetURI(PersistEntity requestEntity, String path, String operation) {
     // Target URI
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{reference}")
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{reference}" + operation)
         .buildAndExpand(requestEntity.getReference()).toUri();
-    uri = formatUriWithCorrectReference(uri, path, requestEntity.getReference());
+    uri = formatUriWithCorrectReference(uri, path, requestEntity.getReference() + operation);
     return uri;
   }
 
+  public URI createTargetURI(PersistEntity requestEntity, String path) {
+    return createTargetURI(requestEntity, path, "");
+  }
 
   public ResponseEntity<Object> prepareRequestEntityToPersist(String reference,
       PersistEntity requestEntity, int operation) {
     try {
       // verification of the request body, except in case of suppression
-      if (requestEntity != null || operation == OPERATION_DELETE) {
+      if (requestEntity != null || operation == OPERATION_DELETE || operation == OPERATION_OTHERS) {
 
         // In case of creation the reference is within the request entity else it is within the path
         if (operation == OPERATION_CREATE) {
@@ -251,7 +247,7 @@ public class MicroserviceControllerServiceImpl implements MicroserviceController
               break;
             default:
               message = "Operation on the " + existingEntity.getEntityName() + " "
-                  + existingEntity.getReference() + " with values = " + requestEntity;
+                  + existingEntity.getReference();
           }
           LOGGER.info(message);
           // No error then returns null

@@ -18,6 +18,8 @@ public interface MicroserviceControllerService {
   public static final int OPERATION_FULL_UPDATE = 2;
   public static final int OPERATION_PARTIAL_UPDATE = 3;
   public static final int OPERATION_DELETE = 4;
+  public static final int OPERATION_OTHERS = 5;
+
 
   /**
    * Analyse exception in order to build a response body for the microservices with errors
@@ -89,6 +91,16 @@ public interface MicroserviceControllerService {
    * @return the uri
    */
   public URI createTargetURI(PersistEntity requestEntity, String path);
+
+  /**
+   * Creates the target URI
+   * 
+   * @param requestEntity request entity
+   * @param path path of the microservice
+   * @param operation operation on the entity as "/cancelation"
+   * @return the uri
+   */
+  public URI createTargetURI(PersistEntity requestEntity, String path, String operation);
 
 
   /**
